@@ -1,0 +1,271 @@
+---
+title: "Guided Project: Statistical Transformations and Coordinate Systems"
+subtitle: "CIS-3901 · Module 12"
+author: "Monty Edwards"
+date: 11/19/2026
+format:
+  html:
+    toc: true
+    code-fold: false
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: project-root
+#| include: false
+# The report runs from reports/; this makes the code run from the project
+# folder, so the script's paths (data/...) work here too.
+knitr::opts_knit$set(root.dir = normalizePath(".."))
+```
+
+```{r}
+#| label: read-script
+#| include: false
+# All the code lives in the script. Each empty chunk below takes the code
+# with that "## ---- name ----" label there, and shows it with its output.
+knitr::read_chunk("scripts/gp12_stats_coords.R")
+```
+
+```{r}
+#| label: setup
+#| include: false
+```
+
+```{r}
+#| label: helpers
+#| include: false
+```
+
+<!--
+How to use this template
+- Replace every line that starts with "WRITE:" with your own sentences.
+- Replace "Your Name" above (a first name or initials is fine: this page is
+  public).
+- Replace each fig-alt with one sentence describing what YOUR plot shows.
+- Render, then commit and push (Guided Project page, step 5).
+-->
+
+## My data
+
+For Part A, I used the Adult dataset (`fairness.csv`), where each row represents an individual demographic and income record (5,000 rows total), sourced from the Fairlearn repository and originally extracted from the 1994 U.S. Census Bureau database. For Part B, I used the NFL Draft Combine dataset (`sports.csv`), where each row represents a combine prospect (6,128 rows total), sourced from the SCORE Network repository.
+
+```{r}
+#| label: data
+#| echo: true
+```
+
+## Part A · Fairness
+
+**My group:** `sex`. **My outcome:** `income == ">50K"`.
+
+**Question A:** "Of each sex, what share has income over $50K?"
+**Question B:** "Of everyone with income over $50K, what share is each sex?"
+
+### A0 · My group and my outcome
+
+```{r}
+#| label: a0
+#| echo: true
+```
+
+```{r}
+#| label: a0-check
+#| include: false
+```
+
+### A1 · The rate within each group (question A)
+
+```{r}
+#| label: fig-a1
+#| ref.label: a1
+#| echo: true
+#| fig-cap: "Share of each group with the outcome."
+#| fig-alt: "A horizontal stacked bar chart showing the share of males and females earning over $50K."
+```
+
+```{r}
+#| label: a1-check
+#| include: false
+```
+
+I predicted that males would have a higher rate of earning over $50K than females. The plot confirms that males have the highest rate at roughly 30.4% (1,015 of 3,343), whereas females have the lowest rate at roughly 10.9% (180 of 1,657). Because each bar divides by its own group's total, groups with very different sample sizes can be compared directly on the same 0 to 1 scale.
+
+### A2 · Rates with their standard error
+
+```{r}
+#| label: fig-a2
+#| ref.label: a2
+#| echo: true
+#| fig-cap: "Rate in each group, with ± one standard error and the group size."
+#| fig-alt: "A pointrange plot showing the income rate over $50K with plus or minus one standard error and sample size n for males and females."
+```
+
+```{r}
+#| label: a2-check
+#| include: false
+```
+
+The female group's range is slightly wider because its sample size ($n = 1,657$) is smaller than the male group's sample size ($n = 3,343$). A wider range on a smaller group tells the reader that there is greater sampling uncertainty around that group's estimated rate. Rather than dropping smaller or under-represented groups, this plot keeps them visible by plotting their point estimate alongside their explicit count $n$.
+
+### A3 · Zoom or filter?
+
+```{r}
+#| label: fig-a3
+#| ref.label: a3
+#| echo: true
+#| fig-cap: "Counts per group: from 0, zoomed and filtered."
+#| fig-subcap: ["From 0", "Zoomed", "Filtered"]
+#| fig-alt: "Three horizontal bar charts comparing male and female counts starting from zero, zoomed at 800, and filtered at 800."
+#| layout: [[1, 1, 1]]
+```
+
+```{r}
+#| label: a3-check
+#| include: false
+```
+
+The zoomed plot's Lie Factor (largest vs smallest group) is
+`r round(a3_lie_factor, 1)`.
+
+The plot starting from zero shows the true proportional difference between the 3,343 males and 1,657 females, whereas the zoomed plot cuts off the left side of the bars and makes the male bar look nearly three times as long, and the filtered plot drops the bars completely because their values fall outside the scale limits. The Lie Factor of 1.5 measures how many times the zoomed picture exaggerates the actual ratio between the two group counts. I would publish the first version starting from zero because bar lengths rely on a zero baseline to represent counts honestly.
+
+### A4 · Each group's share of everyone with the outcome (question B)
+
+```{r}
+#| label: fig-a4
+#| ref.label: a4
+#| echo: true
+#| fig-cap: "Each group's share of everyone with the outcome."
+#| fig-alt: "A horizontal bar chart showing the share of all individuals earning over $50K who are male versus female."
+```
+
+```{r}
+#| label: a4-check
+#| include: false
+```
+
+Question A (`A1`, `A2`) and Question B (`A4`) point in the same direction because males both earn over $50K at a higher rate and account for roughly 84.9% (1,015 of 1,195) of everyone in the dataset earning over $50K, amplified by males making up two-thirds of the sample. My Module 11 question requires Question A because comparing rates within each demographic group controls for unequal group sizes.
+
+## Part B · Sports
+
+**My group, outcome and value:** `group = position`, `has_outcome = Round %in% 1`, and `value = forty`.
+
+### B0 · My group, outcome and value
+
+```{r}
+#| label: b0
+#| echo: true
+```
+
+```{r}
+#| label: b0-check
+#| include: false
+```
+
+### B1 · The rate within each group
+
+```{r}
+#| label: fig-b1
+#| ref.label: b1
+#| echo: true
+#| fig-cap: "Share of each group with the outcome."
+#| fig-alt: "A horizontal stacked bar chart showing the share of players drafted in the first round across 19 football positions."
+```
+
+```{r}
+#| label: b1-check
+#| include: false
+```
+
+The plot shows the share of combine participants drafted in the first round for each of the 19 football positions, with positions like QB (16.1%) and DE (14.7%) having higher rates while FB has 0%. Using shares rather than raw counts is necessary because total combine participation varies widely across positions, from 886 wide receivers down to 58 defensive backs.
+
+### B2 · A mean with its two spreads
+
+```{r}
+#| label: fig-b2
+#| ref.label: b2
+#| echo: true
+#| fig-cap: "Mean in each group, with ± one standard error and group size."
+#| fig-alt: "A pointrange plot showing mean 40-yard dash times with plus or minus one standard error and sample size n for each football position."
+```
+
+```{r}
+#| label: b2-check
+#| include: false
+```
+
+```{r}
+#| label: tbl-b2
+#| tbl-cap: "Group size, mean, sd and se."
+#| echo: false
+knitr::kable(b2_summary, digits = 3)
+```
+
+Comparing Wide Receivers (`WR`, mean = 4.482s) and Offensive Tackles (`OT`, mean = 5.206s), the 0.724-second gap between their means is enormous compared to their standard errors (`se` = 0.004s and 0.009s), showing that the position averages are estimated with very high precision. That gap is also substantial compared to their individual standard deviations (`sd` = 0.119s and 0.175s), telling the reader that even individual players at these two positions rarely overlap in 40-yard dash times.
+
+### B3 · Zoom or filter?
+
+```{r}
+#| label: fig-b3
+#| ref.label: b3
+#| echo: true
+#| fig-cap: "Counts per group: zoomed and filtered."
+#| fig-subcap: ["Zoomed", "Filtered"]
+#| fig-alt: "Two horizontal bar charts showing combine counts per position zoomed at 1 and filtered at 1."
+#| layout: [[1, 1]]
+```
+
+```{r}
+#| label: b3-check
+#| include: false
+```
+
+The Lie Factor of your zoomed plot is
+`r round(b3_lie_factor, 1)`.
+
+Because `b3_start` is set to 1 relative to a maximum count of 886 (`WR`) and minimum of 58 (`DB`), the Lie Factor is near 1.0, meaning the zoomed plot barely distorts the visual comparison, whereas the filtered plot removes all 19 bars because their starting baseline at 0 falls outside the `limits = c(1, 886)` scale. This dataset does not include a year or season column, so all combine eras are pooled together.
+
+### B4 · Each group's share of everyone with the outcome
+
+```{r}
+#| label: fig-b4
+#| ref.label: b4
+#| echo: true
+#| fig-cap: "Each group's share of everyone with the outcome."
+#| fig-alt: "A horizontal bar chart showing each football position's share of all first-round draft picks."
+```
+
+```{r}
+#| label: b4-check
+#| include: false
+```
+
+Unlike `B1` where Quarterbacks (`QB`) had the highest first-round draft rate, `B4` shows that Wide Receivers (`WR`) and Cornerbacks (`CB`) make up the largest shares of all first-round draft picks (73 picks each). They do not point in the exact same direction because `WR` and `CB` have much larger total combine pools than `QB`, giving them more total first-round picks despite a lower per-player selection rate.
+
+## Checks
+
+```{r}
+#| label: checks-table
+#| include: false
+```
+
+```{r}
+#| label: tbl-checks
+#| tbl-cap: "Every task's check, at the time this page was rendered."
+#| echo: false
+knitr::kable(checks_table)
+```
+
+## AI use
+
+AI use: I used Gemini to help check syntax errors.
+
+## References
+
+- Fairlearn Contributors. (2021). *Fairlearn: Assessing and improving fairness of AI systems* [Adult dataset]. https://fairlearn.org/
+- Kohavi, R. (1996). Scaling up the accuracy of Naive-Bayes classifiers: A decision-tree hybrid. *Proceedings of the Second International Conference on Knowledge Discovery and Data Mining (KDD-96)*, 202–207. https://archive.ics.uci.edu/dataset/2/adult
+- SCORE Network. (2026). *NFL Draft Combine Dataset*. Sports Content for Outreach, Research, and Education. https://data.scorenetwork.org/
