@@ -301,7 +301,7 @@ knitr::kable(checks_table)
 
 ## AI use
 
-AI use: I used Gemini to help check syntax errors and ChatGPT to check the calculations, correct discrepancies, edit the explanations using my Module 11 notes, and verify the render and publication.
+AI use: Gemini helped me check R syntax. ChatGPT reviewed my work for errors, corrected calculations and explanations, and verified the published report.
 
 ## References
 
