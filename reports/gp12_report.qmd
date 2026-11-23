@@ -301,7 +301,7 @@ knitr::kable(checks_table)
 
 ## AI use
 
-AI use: Gemini and ChatGPT reviewed my work for errors.
+AI use: I used ChatGPT to review my work for errors.
 
 ## References
 
