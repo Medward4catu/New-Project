@@ -4707,14 +4707,83 @@ Table 1: Group size, mean, sd and se.
 </div>
 </div>
 <p>Comparing Wide Receivers (<code>WR</code>, mean = 4.507 s) and Offensive Tackles (<code>OT</code>, mean = 5.232 s), the 0.725-second gap between their means is enormous compared to their standard errors (<code>se</code> = 0.003 s and 0.009 s), showing that the position averages are estimated with very high precision. That gap is also substantial compared to their individual standard deviations (<code>sd</code> = 0.101 s and 0.181 s), which describe the spread of individual times within each position.</p>
+<p><strong>My Module 11 sports question:</strong> How do 40-yard dash times and vertical jump heights vary across offensive skill positions (QB, RB, WR, TE)?</p>
+<p><strong>My hunch:</strong> WRs and RBs will have faster (lower) 40-yard dash times and higher vertical jumps than QBs and TEs.</p>
+<p>This question compares measurements within positions. For each mean, the denominator is the number of players at that position with a recorded result for that drill. B1 and B4 answer separate questions about first-round draft picks.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>b_data <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(position <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;QB&quot;</span>, <span class="st">&quot;RB&quot;</span>, <span class="st">&quot;WR&quot;</span>, <span class="st">&quot;TE&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(position) <span class="sc">%&gt;%</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">dash_n =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(forty)),</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">dash_mean =</span> <span class="fu">mean</span>(forty, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">jump_n =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(vertical)),</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">jump_mean =</span> <span class="fu">mean</span>(vertical, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>, <span class="at">col.names =</span> <span class="fu">c</span>(</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Position&quot;</span>, <span class="st">&quot;Dash n&quot;</span>, <span class="st">&quot;Mean dash (s)&quot;</span>, <span class="st">&quot;Jump n&quot;</span>, <span class="st">&quot;Mean vertical (in)&quot;</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  ))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tbl-skill-drills" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-skill-drills-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table 2: Mean combine results for the four positions in my Module 11 question.
+</figcaption>
+<div aria-describedby="tbl-skill-drills-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Position</th>
+<th style="text-align: right;">Dash n</th>
+<th style="text-align: right;">Mean dash (s)</th>
+<th style="text-align: right;">Jump n</th>
+<th style="text-align: right;">Mean vertical (in)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">QB</td>
+<td style="text-align: right;">325</td>
+<td style="text-align: right;">4.819</td>
+<td style="text-align: right;">286</td>
+<td style="text-align: right;">30.981</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RB</td>
+<td style="text-align: right;">530</td>
+<td style="text-align: right;">4.552</td>
+<td style="text-align: right;">480</td>
+<td style="text-align: right;">34.299</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TE</td>
+<td style="text-align: right;">319</td>
+<td style="text-align: right;">4.757</td>
+<td style="text-align: right;">264</td>
+<td style="text-align: right;">32.956</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">WR</td>
+<td style="text-align: right;">841</td>
+<td style="text-align: right;">4.507</td>
+<td style="text-align: right;">748</td>
+<td style="text-align: right;">35.202</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
 </section>
 <section id="b3-zoom-or-filter" class="level3">
 <h3 class="anchored" data-anchor-id="b3-zoom-or-filter">B3 · Zoom or filter?</h3>
 <div class="cell" data-layout="[[1,1]]">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>b3_table <span class="ot">&lt;-</span> b_data <span class="sc">%&gt;%</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(group) <span class="sc">%&gt;%</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>b3_table</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>b3_table <span class="ot">&lt;-</span> b_data <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(group) <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>b3_table</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 19 × 2
    group     n
@@ -4739,27 +4808,27 @@ Table 1: Group size, mean, sd and se.
 18 EDGE     65
 19 DB       58</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>b3_start <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>b3_counts <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(b_data, <span class="fu">aes</span>(<span class="at">y =</span> group)) <span class="sc">+</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Count&quot;</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>b3_zoom <span class="ot">&lt;-</span> b3_counts <span class="sc">+</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(b3_start, <span class="fu">max</span>(b3_table<span class="sc">$</span>n)), <span class="at">expand =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>b3_filter <span class="ot">&lt;-</span> b3_counts <span class="sc">+</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(b3_start, <span class="fu">max</span>(b3_table<span class="sc">$</span>n)))</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>b3_lie_factor <span class="ot">&lt;-</span></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  ((<span class="fu">max</span>(b3_table<span class="sc">$</span>n) <span class="sc">-</span> b3_start) <span class="sc">/</span> (<span class="fu">min</span>(b3_table<span class="sc">$</span>n) <span class="sc">-</span> b3_start)) <span class="sc">/</span></span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">max</span>(b3_table<span class="sc">$</span>n) <span class="sc">/</span> <span class="fu">min</span>(b3_table<span class="sc">$</span>n))</span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>b3_lie_factor</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>b3_start <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>b3_counts <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(b_data, <span class="fu">aes</span>(<span class="at">y =</span> group)) <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Count&quot;</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>b3_zoom <span class="ot">&lt;-</span> b3_counts <span class="sc">+</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(b3_start, <span class="fu">max</span>(b3_table<span class="sc">$</span>n)), <span class="at">expand =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>b3_filter <span class="ot">&lt;-</span> b3_counts <span class="sc">+</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(b3_start, <span class="fu">max</span>(b3_table<span class="sc">$</span>n)))</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>b3_lie_factor <span class="ot">&lt;-</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  ((<span class="fu">max</span>(b3_table<span class="sc">$</span>n) <span class="sc">-</span> b3_start) <span class="sc">/</span> (<span class="fu">min</span>(b3_table<span class="sc">$</span>n) <span class="sc">-</span> b3_start)) <span class="sc">/</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">max</span>(b3_table<span class="sc">$</span>n) <span class="sc">/</span> <span class="fu">min</span>(b3_table<span class="sc">$</span>n))</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>b3_lie_factor</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.016395</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_plot</span>(b3_zoom)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">show_plot</span>(b3_filter)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_plot</span>(b3_zoom)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">show_plot</span>(b3_filter)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div id="fig-b3" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-b3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -4802,16 +4871,16 @@ Figure 7: Counts per group: zoomed and filtered.
 <section id="b4-each-groups-share-of-everyone-with-the-outcome" class="level3">
 <h3 class="anchored" data-anchor-id="b4-each-groups-share-of-everyone-with-the-outcome">B4 · Each group’s share of everyone with the outcome</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>b4_shares <span class="ot">&lt;-</span> b_data <span class="sc">%&gt;%</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">%&gt;%</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">sum</span>(has_outcome, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">share =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>b4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(b4_shares, <span class="fu">aes</span>(<span class="at">x =</span> share, <span class="at">y =</span> group)) <span class="sc">+</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Share of everyone with the outcome&quot;</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="fu">show_plot</span>(b4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>b4_shares <span class="ot">&lt;-</span> b_data <span class="sc">%&gt;%</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">sum</span>(has_outcome, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">share =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>b4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(b4_shares, <span class="fu">aes</span>(<span class="at">x =</span> share, <span class="at">y =</span> group)) <span class="sc">+</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Share of everyone with the outcome&quot;</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="fu">show_plot</span>(b4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-b4" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A horizontal bar chart showing each football position&#39;s share of all first-round draft picks.">
 <figure class="quarto-float quarto-float-fig figure">
@@ -4834,7 +4903,7 @@ Figure 8: Each group’s share of everyone with the outcome.
 <div id="tbl-checks" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-checks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table 2: Every task’s check, at the time this page was rendered.
+Table 3: Every task’s check, at the time this page was rendered.
 </figcaption>
 <div aria-describedby="tbl-checks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">

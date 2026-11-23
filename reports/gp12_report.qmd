@@ -207,6 +207,29 @@ knitr::kable(b2_summary, digits = 3)
 
 Comparing Wide Receivers (`WR`, mean = 4.507 s) and Offensive Tackles (`OT`, mean = 5.232 s), the 0.725-second gap between their means is enormous compared to their standard errors (`se` = 0.003 s and 0.009 s), showing that the position averages are estimated with very high precision. That gap is also substantial compared to their individual standard deviations (`sd` = 0.101 s and 0.181 s), which describe the spread of individual times within each position.
 
+**My Module 11 sports question:** How do 40-yard dash times and vertical jump heights vary across offensive skill positions (QB, RB, WR, TE)?
+
+**My hunch:** WRs and RBs will have faster (lower) 40-yard dash times and higher vertical jumps than QBs and TEs.
+
+This question compares measurements within positions. For each mean, the denominator is the number of players at that position with a recorded result for that drill. B1 and B4 answer separate questions about first-round draft picks.
+
+```{r}
+#| label: tbl-skill-drills
+#| tbl-cap: "Mean combine results for the four positions in my Module 11 question."
+b_data %>%
+  filter(position %in% c("QB", "RB", "WR", "TE")) %>%
+  group_by(position) %>%
+  summarize(
+    dash_n = sum(!is.na(forty)),
+    dash_mean = mean(forty, na.rm = TRUE),
+    jump_n = sum(!is.na(vertical)),
+    jump_mean = mean(vertical, na.rm = TRUE)
+  ) %>%
+  knitr::kable(digits = 3, col.names = c(
+    "Position", "Dash n", "Mean dash (s)", "Jump n", "Mean vertical (in)"
+  ))
+```
+
 ### B3 · Zoom or filter?
 
 ```{r}
