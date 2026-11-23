@@ -381,8 +381,8 @@ check("B3",
 # YOUR TURN: replace NULL with the B version of a4_shares and a4.
 ## ---- b4 ----
 b4_shares <- b_data %>%
-  filter(has_outcome) %>%
-  count(group) %>%
+  group_by(group) %>%
+  summarize(n = sum(has_outcome, na.rm = TRUE), .groups = "drop") %>%
   mutate(share = n / sum(n))
 
 b4 <- ggplot(b4_shares, aes(x = share, y = group)) +
