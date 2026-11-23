@@ -60,6 +60,8 @@ For Part A, I used the Adult dataset (`fairness.csv`), where each row represents
 
 ## Part A · Fairness
 
+My earlier Fairness question was: "How do hours worked per week and education level relate to whether a person earns over $50K, and does this differ by sex?" My hunch was that people with more years of education and higher weekly hours would be more likely to earn over $50K, with men more frequently in the higher-income group. This analysis checks the difference by sex; it does not compare people at the same education level or weekly hours.
+
 **My group:** `sex`. **My outcome:** `income == ">50K"`.
 
 **Question A:** "Of each sex, what share has income over $50K?"
@@ -96,6 +98,8 @@ I predicted that males would have a higher rate of earning over $50K than female
 
 ### A2 · Rates with their standard error
 
+The A1 rates tell us where the two points should fall. To predict the widths of their error bars, we need both the group sizes and the rates.
+
 ```{r}
 #| label: fig-a2
 #| ref.label: a2
@@ -112,6 +116,8 @@ I predicted that males would have a higher rate of earning over $50K than female
 The male group's range is slightly wider (SE = 0.795 percentage points, $n = 3,343$) than the female group's range (SE = 0.764 percentage points, $n = 1,657$). The standard error depends on both the rate and the sample size. A wider range tells the reader that there is greater sampling uncertainty around that group's estimated rate. Rather than dropping smaller or under-represented groups, this plot keeps them visible by plotting their point estimate alongside their explicit count $n$.
 
 ### A3 · Zoom or filter?
+
+The two counts differ by 1,686 people. Starting the axis at 800 should leave that difference intact but make the longer bar look larger relative to the shorter one.
 
 ```{r}
 #| label: fig-a3
@@ -134,6 +140,8 @@ The zoomed plot's Lie Factor (largest vs smallest group) is
 The plot starting from zero shows the true proportional difference between the 3,343 males and 1,657 females, whereas the zoomed plot cuts off the left side of the bars and makes the male bar look nearly three times as long, and the filtered plot drops the bars completely because their zero baseline falls outside the scale limits. The Lie Factor of 1.5 measures how many times the zoomed picture exaggerates the actual ratio between the two group counts. I would publish the first version starting from zero because bar lengths rely on a zero baseline to represent counts honestly.
 
 ### A4 · Each group's share of everyone with the outcome (question B)
+
+The A0 counts give a prediction for this plot: 1,015 of the 1,195 higher-income records are male, so the male bar should take up more than four-fifths of the total share.
 
 ```{r}
 #| label: fig-a4
@@ -167,6 +175,8 @@ Question A (`A1`, `A2`) and Question B (`A4`) point in the same direction becaus
 ```
 
 ### B1 · The rate within each group
+
+With horizontal bars, all 19 position labels fit down the left side. Each row identifies a position directly, and the two fill colors show whether a player was picked in round one. The B0 counts predict an empty first-round segment for fullbacks: none of the 83 were picked in that round.
 
 ```{r}
 #| label: fig-b1
@@ -230,7 +240,11 @@ b_data %>%
   ))
 ```
 
+Both comparisons support the hunch in this sample: WR (4.51 s, 35.2 in) and RB (4.55 s, 34.3 in) show faster average 40-yard dash times and higher average vertical jumps than TE (4.76 s, 33.0 in) and QB (4.82 s, 31.0 in).
+
 ### B3 · Zoom or filter?
+
+Starting at 1 should change the apparent lengths very little: even the smallest group has 58 players. As in A3, setting scale limits above zero should remove the bars.
 
 ```{r}
 #| label: fig-b3
@@ -253,6 +267,8 @@ The Lie Factor of the zoomed plot is
 Because `b3_start` is set to 1 relative to a maximum count of 886 (`WR`) and minimum of 58 (`DB`), the Lie Factor is near 1.0, meaning the zoomed plot barely distorts the visual comparison, whereas the filtered plot removes all 19 bars because their starting baseline at 0 falls outside the `limits = c(1, 886)` scale. This dataset does not include a year or season column, so all combine eras are pooled together.
 
 ### B4 · Each group's share of everyone with the outcome
+
+Since WR and CB each have 73 first-round picks and now share the same denominator, their bars should be the same length. FB should stay on the axis with a share of zero.
 
 ```{r}
 #| label: fig-b4
@@ -285,7 +301,7 @@ knitr::kable(checks_table)
 
 ## AI use
 
-AI use: I used Gemini to help check syntax errors and ChatGPT to check the calculations, correct discrepancies, and verify the render and publication.
+AI use: I used Gemini to help check syntax errors and ChatGPT to check the calculations, correct discrepancies, edit the explanations using my Module 11 notes, and verify the render and publication.
 
 ## References
 
